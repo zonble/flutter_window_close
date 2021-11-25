@@ -17,35 +17,73 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  var _alertShowing = false;
+
+  @override
   void initState() {
     super.initState();
+
+    FlutterWindowClose.setWindowShouldCloseHandler(() async {
+      if (_alertShowing) return false;
+
+      _alertShowing = true;
+
+      return await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Do you really want to quit?'),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                      _alertShowing = false;
+                    },
+                    child: const Text('Yes')),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                      _alertShowing = false;
+                    },
+                    child: const Text('No'))
+              ],
+            );
+          });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  FlutterWindowClose.exit();
-                },
-                child: const Text('exit')),
-            const SizedBox(height: 20),
-            ElevatedButton(
-                onPressed: () {
-                  FlutterWindowClose.exitAnyway();
-                },
-                child: const Text('exit amyway')),
-          ],
-        )),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Plugin example app'),
       ),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                FlutterWindowClose.closeWindow();
+              },
+              child: const Text('Close Window')),
+        ],
+      )),
     );
   }
 }

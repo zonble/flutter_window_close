@@ -18,34 +18,10 @@ namespace {
 
 using flutter::EncodableMap;
 using flutter::EncodableValue;
-//
-//static std::string
-//GetStringArgument(const flutter::MethodCall<>& method_call, const char* key)
-//{
-//    std::string arg;
-//    const auto* arguments = std::get_if<EncodableMap>(method_call.arguments());
-//    if (arguments) {
-//        auto arg_it = arguments->find(EncodableValue(key));
-//        if (arg_it != arguments->end()) {
-//            arg = std::get<std::string>(arg_it->second);
-//        }
-//    }
-//    return arg;
-//}
 
-static int
-GetIntArgument(const flutter::MethodCall<>& method_call, const char* key)
-{
-    int arg = 0;
-    const auto* arguments = std::get_if<EncodableMap>(method_call.arguments());
-    if (arguments) {
-        auto arg_it = arguments->find(EncodableValue(key));
-        if (arg_it != arguments->end()) {
-            arg = std::get<int>(arg_it->second);
-        }
-    }
-    return arg;
-}
+static LRESULT CALLBACK WindowCloseWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+static WNDPROC oldProc;
+static std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>> channel_;
 
 class FlutterWindowClosePlugin : public flutter::Plugin {
 public:
@@ -66,6 +42,15 @@ private:
 void FlutterWindowClosePlugin::RegisterWithRegistrar(
     flutter::PluginRegistrarWindows* registrar)
 {
+    HWND handle = GetActiveWindow();
+    oldProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(handle, GWLP_WNDPROC));
+    SetWindowLongPtr(handle, GWLP_WNDPROC, (LONG_PTR)WindowCloseWndProc);
+
+    channel_ = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+        registrar->messenger(),
+        "flutter_window_close_notification",
+        &flutter::StandardMethodCodec::GetInstance());
+
     auto channel = std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
         registrar->messenger(), "flutter_window_close",
         &flutter::StandardMethodCodec::GetInstance());
@@ -88,18 +73,30 @@ void FlutterWindowClosePlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue>& method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result)
 {
-    if (method_call.method_name().compare("exit") == 0) {
-        int exitCode = GetIntArgument(method_call, "exit_code");
-        PostQuitMessage(exitCode);
+    if (method_call.method_name().compare("closeWindow") == 0) {
+        HWND handle = GetActiveWindow();
+        PostMessage(handle, WM_CLOSE, 0, 0);
         result->Success(flutter::EncodableValue(nullptr));
-    } else if (method_call.method_name().compare("exitAnyWay") == 0) {
-        int exitCode = GetIntArgument(method_call, "exit_code");
-        exit(exitCode);
-        // Lines after "exit" will all be dead code.
+    } else if (method_call.method_name().compare("destroyWindow") == 0) {
+        HWND handle = GetActiveWindow();
+        DestroyWindow(handle);
+        result->Success(flutter::EncodableValue(nullptr));
     } else {
         result->NotImplemented();
     }
 }
+
+LRESULT CALLBACK
+WindowCloseWndProc(HWND hWnd, UINT iMessage, WPARAM wparam, LPARAM lparam)
+{
+    if (iMessage == WM_CLOSE) {
+        auto args = std::make_unique<flutter::EncodableValue>(nullptr);
+        channel_->InvokeMethod("onWindowClose", std::move(args));
+        return 0;
+    }
+    return oldProc(hWnd, iMessage, wparam, lparam);
+}
+
 
 } // namespace
 
@@ -110,3 +107,4 @@ void FlutterWindowClosePluginRegisterWithRegistrar(
         flutter::PluginRegistrarManager::GetInstance()
             ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
 }
+
