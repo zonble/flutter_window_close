@@ -57,6 +57,9 @@ The plugin bridges following APIs:
   [Widget::delete-event](https://docs.gtk.org/gtk3/signal.Widget.delete-event.html)
   signal
 
+It does not support mobile and web since there are no such event for closing
+windows on these platforms.
+
 ## macOS
 
 There could be some issues while using the package on macOS. Each platform has
@@ -80,7 +83,9 @@ does not tell plugins which window is the one running Flutter as well.
 
 The plugin listens to the first window in the
 [windows](https://developer.apple.com/documentation/appkit/nsapplication/1428402-windows)
-list of the NSApplication object. It works if you have only one window in your
-macOS Flutter app. If you just create a new app using the official template for
-macOS, you may need not to change anything. However, if your app has multiple
-windows, the behavior of the plugin might be unexpectable.
+list of the singleton
+[NSApplication](https://developer.apple.com/documentation/appkit/nsapplication)
+object. It works if you have only one window in your macOS Flutter app. If you
+just create a new app using the official template for macOS, you may need not to
+change anything. However, if your app has multiple windows, the behavior of the
+plugin might be unexpectable.
