@@ -1,7 +1,7 @@
 name: flutter_window_close
-description: Helps Flutter apps to close application window.
-version: 0.0.1
-homepage:
+description: Let your Flutter app has a chance to confirm if the user wants to close your app.
+version: 0.1.0
+homepage: https://github.com/zonble/flutter_window_close
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
