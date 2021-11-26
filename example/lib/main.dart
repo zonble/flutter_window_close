@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
+import 'package:menubar/menubar.dart';
 
 void main() {
   runApp(const MyApp());
+  final menu = <Submenu>[
+    Submenu(
+      label: '_File',
+      children: [
+        MenuItem(
+            label: 'E_xit', onClicked: () => FlutterWindowClose.closeWindow()),
+      ],
+    ),
+    Submenu(label: '_Help', children: [
+      MenuItem(
+          label: '_About',
+          onClicked: () => FlutterPlatformAlert.showCustomAlert(
+                windowTitle: 'About',
+                text:
+                    'flutter_window_close\n\nhttps://pub.dev/packages/flutter_window_close',
+              )),
+    ]),
+  ];
+  setApplicationMenu(menu);
 }
 
 class MyApp extends StatefulWidget {

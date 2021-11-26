@@ -11,7 +11,11 @@ dependencies:
   flutter_platform_alert:
   flutter_window_close:
     path: ../
-  cupertino_icons: ^1.0.2
+  menubar:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/menubar
+  cupertino_icons: ^1.0.3
 
 dev_dependencies:
   flutter_test:

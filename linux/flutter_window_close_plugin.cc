@@ -71,7 +71,7 @@ main_window_close(GtkWidget* window, gpointer data)
     fl_method_channel_invoke_method(notificationChannel,
         "onWindowClose",
         value, NULL, NULL, NULL);
-    return true;
+    return TRUE;
 }
 
 void flutter_window_close_plugin_register_with_registrar(FlPluginRegistrar* registrar)
