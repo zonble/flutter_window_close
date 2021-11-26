@@ -28,19 +28,19 @@ current user is willing to do:
 ```dart
 FlutterWindowClose.setWindowShouldCloseHandler(() async {
     return await showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                  title: const Text('Do you really want to quit?'),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: const Text('Yes')),
-                    ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text('No')),
-                  ]);
-            });
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+          title: const Text('Do you really want to quit?'),
+          actions: [
+            ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Yes')),
+            ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No')),
+          ]);
+        });
 });
 ```
 
