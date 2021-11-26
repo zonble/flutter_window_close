@@ -77,7 +77,6 @@ main_window_close(GtkWidget* window, gpointer data)
 void flutter_window_close_plugin_register_with_registrar(FlPluginRegistrar* registrar)
 {
     GtkWidget* window = gtk_widget_get_ancestor((GtkWidget*)fl_plugin_registrar_get_view(registrar), GTK_TYPE_WINDOW);
-    printf("window %p", window);
     g_signal_connect(G_OBJECT(window), "delete_event",
         G_CALLBACK(main_window_close),
         NULL);
