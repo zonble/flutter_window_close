@@ -72,7 +72,7 @@ On Windows and Linux, windows are more like controllers in MVC pattern , and
 when it comes to Flutter, there would be always a root window in the process of
 an app, and our plugin could easily know which is the window to listen to. In
 the code level, we use
-[GetActiveWindow](https://docs.microsoft.com/zh-tw/windows/win32/api/winuser/nf-winuser-getactivewindow)
+[GetActiveWindow](https://docs.microsoft.com/windows/win32/api/winuser/nf-winuser-getactivewindow)
 while we can use
 [gtk_widget_get_ancestor](https://people.gnome.org/~shaunm/girdoc/C/Gtk.Widget.get_ancestor.html)
 or
@@ -91,3 +91,7 @@ object. It works if you have only one window in your macOS Flutter app. If you
 just create a new app using the official template for macOS, you may need not to
 change anything. However, if your app has multiple windows, the behavior of the
 plugin might be unexpectable.
+
+## License
+
+The package is released under MIT license.
