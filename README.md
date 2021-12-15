@@ -12,6 +12,8 @@ and Linux.
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 
+![Example](https://raw.githubusercontent.com/zonble/flutter_window_close/main/close.gif)
+
 ## Getting Started
 
 It is very common that an app would prompt a message like "Do you really want to
