@@ -69,6 +69,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_platform_alert:
+    dependency: "direct main"
+    description:
+      name: flutter_platform_alert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -80,7 +87,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.1.1"
   lints:
     dependency: transitive
     description:
@@ -94,7 +101,20 @@ packages:
       name: matcher
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.12.11"
+=======
+    version: "0.12.10"
+  menubar:
+    dependency: "direct main"
+    description:
+      path: "plugins/menubar"
+      ref: HEAD
+      resolved-ref: "03d957e8b5c99fc83cd4a781031b154ab3de8753"
+      url: "https://github.com/google/flutter-desktop-embedding.git"
+    source: git
+    version: "0.1.0"
+>>>>>>> 35109d87e02af62c1c3c699c01e3e55d147ef4ee
   meta:
     dependency: transitive
     description:
