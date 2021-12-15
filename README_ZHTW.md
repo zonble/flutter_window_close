@@ -88,6 +88,13 @@ View 以及視窗物件。
 有什麼問題，但如果你有多個視窗，而你的第一個視窗又不是 Flutter 所在的視窗的話，
 那你就不會收到視窗關閉的事件了。
 
+## Flutter Web
+
+如果你的 Flutter App 是在 Web 中運作，那，我們能做的相當有限。要讓用戶在關閉某個
+瀏覽器分頁或是視窗時，跳出提示訊息，只能夠調整
+[onbeforeunload](https://developer.mozilla.org/zh-TW/docs/Web/API/WindowEventHandlers/onbeforeunload)
+的回傳字串。你可以透過呼叫 `setWebReturnValue` 設置一個提示訊息。
+
 ## 授權
 
 本專案使用 MIT 授權

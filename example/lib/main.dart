@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
@@ -5,6 +6,8 @@ import 'package:menubar/menubar.dart';
 
 void main() {
   runApp(const MyApp());
+  if (kIsWeb) return;
+
   final menu = <Submenu>[
     Submenu(
       label: '_File',
@@ -57,6 +60,11 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
 
+    if (kIsWeb) {
+      FlutterWindowClose.setWebReturnValue('Are you sure?');
+      return;
+    }
+
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
       if (_index == 0) {
         if (_alertShowing) return false;
@@ -97,6 +105,13 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('flutter_window_close')),
+        body: const Center(child: Text('Please try to close the tab/window.')),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('flutter_window_close')),
       body: Center(

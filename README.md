@@ -59,8 +59,10 @@ The plugin bridges following APIs:
   [Widget::delete-event](https://docs.gtk.org/gtk3/signal.Widget.delete-event.html)
   signal
 
-It does not support mobile and web since there are no such event for closing
-windows on these platforms.
+It does not support mobile platforms, since there is no such event for closing
+windows. You can use a custom
+[WillPopScope](https://api.flutter.dev/flutter/widgets/WillPopScope-class.html)
+to capture if a user is leaving your app with a back key.
 
 ## macOS
 
@@ -91,6 +93,14 @@ object. It works if you have only one window in your macOS Flutter app. If you
 just create a new app using the official template for macOS, you may need not to
 change anything. However, if your app has multiple windows, the behavior of the
 plugin might be unexpectable.
+
+## Flutter Web
+
+We can do little when a user is closing the tab or window hosting your Flutter
+Web app. The only way to let a user to confirm if he or she really want to close
+is to set the return value of the
+[onbeforeunload](https://developer.mozilla.org/docs/Web/API/WindowEventHandlers/onbeforeunload)
+event. You can use the `setWebReturnValue` method to set the return value.
 
 ## License
 
