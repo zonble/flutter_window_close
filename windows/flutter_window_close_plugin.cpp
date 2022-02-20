@@ -31,7 +31,11 @@ public:
 
     virtual ~FlutterWindowClosePlugin();
 
+    void SetWindow(HWND handle);
+    HWND GetWindow();
+
 private:
+    HWND m_windowHandle;
     // Called when a method is called on this plugin's channel from Dart.
     void HandleMethodCall(
         const flutter::MethodCall<flutter::EncodableValue>& method_call,
@@ -56,6 +60,7 @@ void FlutterWindowClosePlugin::RegisterWithRegistrar(
         &flutter::StandardMethodCodec::GetInstance());
 
     auto plugin = std::make_unique<FlutterWindowClosePlugin>();
+    plugin->SetWindow(handle);
 
     channel->SetMethodCallHandler(
         [plugin_pointer = plugin.get()](const auto& call, auto result) {
@@ -69,18 +74,34 @@ FlutterWindowClosePlugin::FlutterWindowClosePlugin() { }
 
 FlutterWindowClosePlugin::~FlutterWindowClosePlugin() { }
 
+void FlutterWindowClosePlugin::SetWindow(HWND handle)
+{
+    m_windowHandle = handle;
+}
+
+HWND FlutterWindowClosePlugin::GetWindow()
+{
+    return m_windowHandle;
+}
+
 void FlutterWindowClosePlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue>& method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result)
 {
     if (method_call.method_name().compare("closeWindow") == 0) {
-        HWND handle = GetActiveWindow();
-        PostMessage(handle, WM_CLOSE, 0, 0);
-        result->Success(flutter::EncodableValue(nullptr));
+        if (m_windowHandle) {
+            PostMessage(m_windowHandle, WM_CLOSE, 0, 0);
+            result->Success(flutter::EncodableValue(nullptr));
+        } else {
+            result->Error("no_window", "The active window does not exist");
+        }
     } else if (method_call.method_name().compare("destroyWindow") == 0) {
-        HWND handle = GetActiveWindow();
-        DestroyWindow(handle);
-        result->Success(flutter::EncodableValue(nullptr));
+        if (m_windowHandle) {
+            DestroyWindow(m_windowHandle);
+            result->Success(flutter::EncodableValue(nullptr));
+        } else {
+            result->Error("no_window", "The active window does not exist");
+        }
     } else {
         result->NotImplemented();
     }
@@ -97,7 +118,6 @@ WindowCloseWndProc(HWND hWnd, UINT iMessage, WPARAM wparam, LPARAM lparam)
     return oldProc(hWnd, iMessage, wparam, lparam);
 }
 
-
 } // namespace
 
 void FlutterWindowClosePluginRegisterWithRegistrar(
@@ -107,4 +127,3 @@ void FlutterWindowClosePluginRegisterWithRegistrar(
         flutter::PluginRegistrarManager::GetInstance()
             ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
 }
-

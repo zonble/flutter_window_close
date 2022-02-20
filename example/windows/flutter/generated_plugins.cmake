@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_platform_alert
   flutter_window_close
+  menubar
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

@@ -39,9 +39,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MainPage(),
-    );
+    return const MaterialApp(home: MainPage());
   }
 }
 
@@ -98,6 +96,8 @@ class _MainPageState extends State<MainPage> {
           negativeButtonTitle: "Cancel",
         );
         return result == CustomButton.positiveButton;
+      } else if (_index == 3) {
+        return await Future.delayed(const Duration(seconds: 1), () => true);
       }
       return true;
     });
@@ -141,6 +141,14 @@ class _MainPageState extends State<MainPage> {
               onChanged: (int? value) => setState(() => _index = value ?? 2),
             ),
             title: const Text('No Confirm'),
+          ),
+          ListTile(
+            leading: Radio<int>(
+              groupValue: _index,
+              value: 3,
+              onChanged: (int? value) => setState(() => _index = value ?? 2),
+            ),
+            title: const Text('No Confirm with Delay'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
