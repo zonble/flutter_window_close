@@ -25,7 +25,9 @@ class FlutterWindowClosePluginWeb {
   FlutterWindowClosePluginWeb() {
     html.window.onBeforeUnload.listen((event) {
       if (event is html.BeforeUnloadEvent) {
-        event.returnValue = _returnValue;
+        if (_returnValue != null) {
+          event.returnValue = _returnValue;
+        }
       }
     });
   }

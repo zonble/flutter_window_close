@@ -86,7 +86,7 @@ class FlutterWindowClose {
 
   /// Sets a return value when the current window or tab is being closed
   /// when your app is running in Flutter Web.
-  static void setWebReturnValue(String returnValue) {
+  static void setWebReturnValue(String? returnValue) {
     if (!kIsWeb) throw Exception('The method only works in Flutter Web.');
     _channel.invokeMethod('setWebReturnValue', returnValue);
   }
