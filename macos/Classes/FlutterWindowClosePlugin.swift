@@ -3,12 +3,12 @@ import FlutterMacOS
 
 public class FlutterWindowClosePlugin: NSObject, FlutterPlugin, NSWindowDelegate {
     var window: NSWindow?
-    var notificationChanne: FlutterMethodChannel?
+    var notificationChannel: FlutterMethodChannel?
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "flutter_window_close", binaryMessenger: registrar.messenger)
         let instance = FlutterWindowClosePlugin()
-        instance.notificationChanne = FlutterMethodChannel(name: "flutter_window_close_notification", binaryMessenger: registrar.messenger)
+        instance.notificationChannel = FlutterMethodChannel(name: "flutter_window_close_notification", binaryMessenger: registrar.messenger)
         instance.window = NSApp.windows.first
         instance.window?.delegate = instance
         registrar.addMethodCallDelegate(instance, channel: channel)
@@ -28,7 +28,7 @@ public class FlutterWindowClosePlugin: NSObject, FlutterPlugin, NSWindowDelegate
     }
 
     public func windowShouldClose(_ sender: NSWindow) -> Bool {
-        notificationChanne?.invokeMethod("onWindowClose", arguments: nil)
+        notificationChannel?.invokeMethod("onWindowClose", arguments: nil)
         return false
     }
 }

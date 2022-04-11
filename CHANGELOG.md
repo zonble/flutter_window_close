@@ -1,4 +1,8 @@
-## 0.2.1419380
+## 0.2.2
+
+- Allow setting the web return value to null. Thanks to [doppio](https://github.com/doppio)
+
+## 0.2.1
 
 - Fix the issue that the window won't be closed when sending the message to close window after a delay on Windows.
 
