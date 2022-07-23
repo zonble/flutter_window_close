@@ -5,6 +5,7 @@
 #include <sys/utsname.h>
 
 #include <cstring>
+#include <thread>
 
 #define FLUTTER_WINDOW_CLOSE_PLUGIN(obj)                                       \
     (G_TYPE_CHECK_INSTANCE_CAST((obj), flutter_window_close_plugin_get_type(), \
@@ -35,7 +36,9 @@ static void flutter_window_close_plugin_handle_method_call(
         response
             = FL_METHOD_RESPONSE(fl_method_success_response_new(nullptr));
         fl_method_call_respond(method_call, response, nullptr);
-        gtk_widget_destroy((GtkWidget*)self->widget);
+        std::thread([=]() {
+            g_signal_emit_by_name(G_OBJECT((GtkWindow*)self->widget), "destroy");
+        }).detach();
     } else {
         g_autoptr(FlMethodResponse) response = nullptr;
         response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
