@@ -84,6 +84,11 @@ class FlutterWindowClose {
     _channel.invokeMethod('closeWindow');
   }
 
+  static void destroyWindow() {
+    if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
+    _channel.invokeMethod('destroyWindow');
+  }
+
   /// Sets a return value when the current window or tab is being closed
   /// when your app is running in Flutter Web.
   static void setWebReturnValue(String? returnValue) {
