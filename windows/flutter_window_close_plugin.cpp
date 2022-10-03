@@ -65,7 +65,8 @@ FlutterWindowClosePlugin::FlutterWindowClosePlugin(
 
 FlutterWindowClosePlugin::~FlutterWindowClosePlugin() {
   if (window_proc_delegate_id_ != -1) {
-    registrar_->UnregisterTopLevelWindowProcDelegate(window_proc_delegate_id_);
+    registrar_->UnregisterTopLevelWindowProcDelegate(
+        static_cast<int32_t>(window_proc_delegate_id_));
   }
 }
 
