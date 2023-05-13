@@ -1,32 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
-import 'package:menubar/menubar.dart';
+// import 'package:menubar/menubar.dart';
 
 void main() {
   runApp(const MyApp());
-  if (kIsWeb) return;
-
-  final menu = <Submenu>[
-    Submenu(
-      label: '_File',
-      children: [
-        MenuItem(
-            label: 'E_xit', onClicked: () => FlutterWindowClose.closeWindow()),
-      ],
-    ),
-    Submenu(label: '_Help', children: [
-      MenuItem(
-          label: '_About',
-          onClicked: () => FlutterPlatformAlert.showCustomAlert(
-                windowTitle: 'About',
-                text:
-                    'flutter_window_close\n\nhttps://pub.dev/packages/flutter_window_close',
-              )),
-    ]),
-  ];
-  setApplicationMenu(menu);
 }
 
 class MyApp extends StatefulWidget {
@@ -112,50 +93,122 @@ class _MainPageState extends State<MainPage> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('flutter_window_close')),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    final platformMenus = <PlatformMenuItem>[
+      PlatformMenu(label: 'Flutter Window Close Example', menus: [
+        PlatformMenuItem(
+            label: 'Quit Flutter Window Close Example',
+            onSelected: () => FlutterWindowClose.closeWindow())
+      ]),
+      PlatformMenu(label: 'Help', menus: [
+        PlatformMenuItem(
+            label: 'About',
+            onSelected: () => FlutterPlatformAlert.showCustomAlert(
+                  windowTitle: 'About',
+                  text:
+                      'flutter_window_close\n\nhttps://pub.dev/packages/flutter_window_close',
+                ))
+      ]),
+    ];
+
+    final menu = MenuBar(
+        style: MenuStyle(
+          elevation: MaterialStateProperty.resolveWith((states) => 0),
+          backgroundColor:
+              MaterialStateColor.resolveWith((states) => Colors.white),
+        ),
         children: [
-          ListTile(
-            leading: Radio<int>(
-              groupValue: _index,
-              value: 0,
-              onChanged: (int? value) => setState(() => _index = value ?? 0),
-            ),
-            title: const Text('Confirm Closing Using Flutter'),
+          SubmenuButton(
+            menuChildren: [
+              MenuItemButton(
+                  child: const Text('Exit'),
+                  onPressed: () => FlutterWindowClose.closeWindow()),
+            ],
+            child: const Text('File'),
           ),
-          ListTile(
-            leading: Radio<int>(
-              groupValue: _index,
-              value: 1,
-              onChanged: (int? value) => setState(() => _index = value ?? 1),
-            ),
-            title: const Text('Confirm Closing Using Native Alert Dialog'),
+          SubmenuButton(
+            menuChildren: [
+              MenuItemButton(
+                  child: const Text('About'),
+                  onPressed: () {
+                    FlutterPlatformAlert.showCustomAlert(
+                      windowTitle: 'About',
+                      text:
+                          'flutter_window_close\n\nhttps://pub.dev/packages/flutter_window_close',
+                    );
+                  }),
+            ],
+            child: const Text('Help'),
           ),
-          ListTile(
-            leading: Radio<int>(
-              groupValue: _index,
-              value: 2,
-              onChanged: (int? value) => setState(() => _index = value ?? 2),
+        ]);
+
+    var inner = Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (Platform.isLinux || Platform.isWindows) menu,
+          Expanded(
+            child: Scaffold(
+              appBar: AppBar(title: const Text('flutter_window_close')),
+              body: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ListTile(
+                    leading: Radio<int>(
+                      groupValue: _index,
+                      value: 0,
+                      onChanged: (int? value) =>
+                          setState(() => _index = value ?? 0),
+                    ),
+                    title: const Text('Confirm Closing Using Flutter'),
+                  ),
+                  ListTile(
+                    leading: Radio<int>(
+                      groupValue: _index,
+                      value: 1,
+                      onChanged: (int? value) =>
+                          setState(() => _index = value ?? 1),
+                    ),
+                    title:
+                        const Text('Confirm Closing Using Native Alert Dialog'),
+                  ),
+                  ListTile(
+                    leading: Radio<int>(
+                      groupValue: _index,
+                      value: 2,
+                      onChanged: (int? value) =>
+                          setState(() => _index = value ?? 2),
+                    ),
+                    title: const Text('No Confirm'),
+                  ),
+                  ListTile(
+                    leading: Radio<int>(
+                      groupValue: _index,
+                      value: 3,
+                      onChanged: (int? value) =>
+                          setState(() => _index = value ?? 2),
+                    ),
+                    title: const Text('No Confirm with Delay'),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                      onPressed: () => FlutterWindowClose.closeWindow(),
+                      child: const Text('Close Window')),
+                ],
+              )),
             ),
-            title: const Text('No Confirm'),
           ),
-          ListTile(
-            leading: Radio<int>(
-              groupValue: _index,
-              value: 3,
-              onChanged: (int? value) => setState(() => _index = value ?? 2),
-            ),
-            title: const Text('No Confirm with Delay'),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-              onPressed: () => FlutterWindowClose.closeWindow(),
-              child: const Text('Close Window')),
         ],
-      )),
+      ),
     );
+
+    if (Platform.isMacOS) {
+      return PlatformMenuBar(
+        menus: platformMenus,
+        child: inner,
+      );
+    }
+
+    return inner;
   }
 }
