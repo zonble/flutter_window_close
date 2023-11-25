@@ -54,14 +54,7 @@ FlutterWindowClosePlugin::FlutterWindowClosePlugin(
       notification_channel_(std::move(
           std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
               registrar->messenger(), "flutter_window_close_notification",
-              &flutter::StandardMethodCodec::GetInstance()))) {
-  if (window_proc_delegate_id_ == -1) {
-    window_proc_delegate_id_ = registrar_->RegisterTopLevelWindowProcDelegate(
-        std::bind(&FlutterWindowClosePlugin::WindowProcDelegate, this,
-                  std::placeholders::_1, std::placeholders::_2,
-                  std::placeholders::_3, std::placeholders::_4));
-  }
-}
+              &flutter::StandardMethodCodec::GetInstance()))) {}
 
 FlutterWindowClosePlugin::~FlutterWindowClosePlugin() {
   if (window_proc_delegate_id_ != -1) {
@@ -82,6 +75,14 @@ void FlutterWindowClosePlugin::HandleMethodCall(
     result->Success(flutter::EncodableValue(nullptr));
   } else if (method_call.method_name().compare("destroyWindow") == 0) {
     ::DestroyWindow(GetWindow());
+    result->Success(flutter::EncodableValue(nullptr));
+  } else if (method_call.method_name().compare("init") == 0) {
+    if (window_proc_delegate_id_ == -1) {
+      window_proc_delegate_id_ = registrar_->RegisterTopLevelWindowProcDelegate(
+          std::bind(&FlutterWindowClosePlugin::WindowProcDelegate, this,
+                    std::placeholders::_1, std::placeholders::_2,
+                    std::placeholders::_3, std::placeholders::_4));
+    }
     result->Success(flutter::EncodableValue(nullptr));
   } else {
     result->NotImplemented();
