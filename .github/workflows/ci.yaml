@@ -22,10 +22,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: flutter_platform_alert
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '12.x'
-          distribution: 'oracle'
       - uses: actions/checkout@v3
         with:
           path: flutter
@@ -59,17 +55,10 @@ jobs:
       - name: Install dependencies
         run: flutter packages get
         working-directory: ${{ github.workspace }}/flutter_platform_alert/example
-      # - name: Build Android APK
-      #   run: flutter build apk
-      #   working-directory: ${{ github.workspace }}/flutter_platform_alert/example
       - name: Build macOS
         if: startsWith(matrix.os, 'macOS')
         run: flutter build macos
         working-directory: ${{ github.workspace }}/flutter_platform_alert/example
-      # - name: Build iOS
-      #   if: startsWith(matrix.os, 'macOS')
-      #   run: flutter build ios --debug --no-codesign --simulator
-      #   working-directory: ${{ github.workspace }}/flutter_platform_alert/example
       - name: Build Linux
         if: startsWith(matrix.os, 'ubuntu')
         run: flutter build linux
