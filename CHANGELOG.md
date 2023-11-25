@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Fix the Linux plugin on Flutter 3.10 and above.
+
 ## 0.2.2
 
 - Allow setting the web return value to null. Thanks to [doppio](https://github.com/doppio)
