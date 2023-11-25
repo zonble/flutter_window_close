@@ -80,6 +80,19 @@ main_window_close(GtkWidget* window, gpointer data)
 void flutter_window_close_plugin_register_with_registrar(FlPluginRegistrar* registrar)
 {
     GtkWidget* window = gtk_widget_get_ancestor((GtkWidget*)fl_plugin_registrar_get_view(registrar), GTK_TYPE_WINDOW);
+
+    // See
+    // https://github.com/leanflutter/window_manager/blob/main/linux/window_manager_plugin.cc
+    //
+    // Disconnect all delete-event handlers first in flutter 3.10.1, which
+    // causes delete_event not working. Issues from flutter/engine:
+    // https://github.com/flutter/engine/pull/40033
+    guint handler_id = g_signal_handler_find(window, G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL,
+                            fl_plugin_registrar_get_view(registrar));
+    if (handler_id > 0) {
+        g_signal_handler_disconnect(window, handler_id);
+    }
+
     g_signal_connect(G_OBJECT(window), "delete_event",
         G_CALLBACK(main_window_close),
         NULL);

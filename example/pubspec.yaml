@@ -8,19 +8,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_platform_alert:
+  flutter_platform_alert: ^0.5.0
   flutter_window_close:
     path: ../
-  menubar:
-    git:
-      url: https://github.com/google/flutter-desktop-embedding.git
-      path: plugins/menubar
-  cupertino_icons: ^1.0.5
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true
