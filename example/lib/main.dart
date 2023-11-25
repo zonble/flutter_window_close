@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:flutter_window_close/flutter_window_close.dart';
-// import 'package:menubar/menubar.dart';
 
 void main() {
   runApp(const MyApp());

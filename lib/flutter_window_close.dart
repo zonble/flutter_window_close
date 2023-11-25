@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 /// A plug-in that helps your Flutter desktop app to handle window close event.
 ///
@@ -9,9 +10,36 @@ import 'package:flutter/services.dart';
 class FlutterWindowClose {
   FlutterWindowClose._();
 
-  static Future<bool> Function()? _onWindowShoudClose;
+  static Future<bool> Function()? _onWindowShouldClose;
   static MethodChannel? _notificationChannel;
   static const MethodChannel _channel = MethodChannel('flutter_window_close');
+
+  static Future<void> _initIfRequired() async {
+    if (_notificationChannel != null) {
+      return;
+    }
+
+    WidgetsFlutterBinding.ensureInitialized();
+    await _channel.invokeMethod('init');
+
+    var channel = const MethodChannel('flutter_window_close_notification');
+    channel.setMethodCallHandler((call) async {
+      if (call.method == 'onWindowClose') {
+        final handler = FlutterWindowClose._onWindowShouldClose;
+
+        // Note: the 'destroyWindow' method just close the window without
+        // any confirming.
+        if (handler != null) {
+          final result = await handler();
+          if (result) _channel.invokeMethod('destroyWindow');
+        } else {
+          _channel.invokeMethod('destroyWindow');
+        }
+      }
+      return null;
+    });
+    _notificationChannel = _channel;
+  }
 
   /// Sets a function to handle window close events.
   ///
@@ -47,29 +75,11 @@ class FlutterWindowClose {
   /// ```
   ///
   /// The method does not support Flutter Web.
-  static void setWindowShouldCloseHandler(Future<bool> Function()? handler) {
+  static Future<void> setWindowShouldCloseHandler(
+      Future<bool> Function()? handler) async {
     if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
-
-    _onWindowShoudClose = handler;
-    if (_notificationChannel == null) {
-      var channel = const MethodChannel('flutter_window_close_notification');
-      channel.setMethodCallHandler((call) async {
-        if (call.method == 'onWindowClose') {
-          final handler = FlutterWindowClose._onWindowShoudClose;
-
-          // Note: the 'destroyWindow' method just close the window without
-          // any confirming.
-          if (handler != null) {
-            final result = await handler();
-            if (result) _channel.invokeMethod('destroyWindow');
-          } else {
-            _channel.invokeMethod('destroyWindow');
-          }
-        }
-        return null;
-      });
-      _notificationChannel = _channel;
-    }
+    _onWindowShouldClose = handler;
+    await _initIfRequired();
   }
 
   /// Sends a message to close the window hosting your Flutter app.
@@ -79,20 +89,22 @@ class FlutterWindowClose {
   /// - On macOS, it calls [-\[NSWindow performClose:\]](https://developer.apple.com/documentation/appkit/nswindow/1419288-performclose?language=objc)
   /// - On Linux, it calls [gtk_window_close](https://gnome.pages.gitlab.gnome.org/gtk/gtk4/method.Window.close.html)
   /// - The method does not support Flutter Web.
-  static void closeWindow() {
+  static Future<void> closeWindow() async {
     if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
-    _channel.invokeMethod('closeWindow');
+    await _initIfRequired();
+    await _channel.invokeMethod('closeWindow');
   }
 
-  static void destroyWindow() {
+  static Future<void> destroyWindow() async {
     if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
-    _channel.invokeMethod('destroyWindow');
+    await _initIfRequired();
+    await _channel.invokeMethod('destroyWindow');
   }
 
   /// Sets a return value when the current window or tab is being closed
   /// when your app is running in Flutter Web.
-  static void setWebReturnValue(String? returnValue) {
+  static Future<void> setWebReturnValue(String? returnValue) async {
     if (!kIsWeb) throw Exception('The method only works in Flutter Web.');
-    _channel.invokeMethod('setWebReturnValue', returnValue);
+    await _channel.invokeMethod('setWebReturnValue', returnValue);
   }
 }
