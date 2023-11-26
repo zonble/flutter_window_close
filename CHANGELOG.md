@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Prevents closing the window only after the plugin is initialized.
+
 ## 0.3.0
 
 - Fix the Linux plugin on Flutter 3.10 and above.
