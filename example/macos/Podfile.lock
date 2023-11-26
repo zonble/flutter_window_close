@@ -4,14 +4,11 @@ PODS:
   - flutter_window_close (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
-  - menubar (0.0.2):
-    - FlutterMacOS
 
 DEPENDENCIES:
   - flutter_platform_alert (from `Flutter/ephemeral/.symlinks/plugins/flutter_platform_alert/macos`)
   - flutter_window_close (from `Flutter/ephemeral/.symlinks/plugins/flutter_window_close/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - menubar (from `Flutter/ephemeral/.symlinks/plugins/menubar/macos`)
 
 EXTERNAL SOURCES:
   flutter_platform_alert:
@@ -20,15 +17,12 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/flutter_window_close/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  menubar:
-    :path: Flutter/ephemeral/.symlinks/plugins/menubar/macos
 
 SPEC CHECKSUMS:
   flutter_platform_alert: b21b2b7d801e71c12ce9ffab618ff114ca9fc903
   flutter_window_close: ee4a6b81ca6fafe93b7cba48b0a18976e3f48e39
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  menubar: 4e3d461d62d775540277ce6639acafe2a111a231
 
 PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.13.0

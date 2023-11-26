@@ -2,8 +2,9 @@ import Cocoa
 import FlutterMacOS
 
 public class FlutterWindowClosePlugin: NSObject, FlutterPlugin, NSWindowDelegate {
-    var window: NSWindow?
-    var notificationChannel: FlutterMethodChannel?
+    private var window: NSWindow?
+    private var notificationChannel: FlutterMethodChannel?
+    private var initialized = false
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "flutter_window_close", binaryMessenger: registrar.messenger)
@@ -22,12 +23,19 @@ public class FlutterWindowClosePlugin: NSObject, FlutterPlugin, NSWindowDelegate
         case "destroyWindow":
             self.window?.close()
             result(nil)
+        case "init":
+            initialized = true
+            result(nil)
         default:
             result(FlutterMethodNotImplemented)
         }
     }
 
     public func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if initialized == false {
+            return true
+        }
+
         notificationChannel?.invokeMethod("onWindowClose", arguments: nil)
         return false
     }
