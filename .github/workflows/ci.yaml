@@ -27,16 +27,16 @@ jobs:
         with:
           flutter-version: ${{ matrix.version }}
           channel: "stable" # optional, default to: 'stable'
-      - name: Add Flutter tags
-        # Add tags, which are also necessary for version checks to work.
-        run: git fetch origin +refs/tags/*:refs/tags/*
-        working-directory: ${{ github.workspace }}/flutter
-      - name: Add Flutter to path - Windows
-        if: startsWith(matrix.os, 'windows')
-        run: echo "$env:GITHUB_WORKSPACE\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: Add Flutter to path - macOS/Linux
-        if: startsWith(matrix.os, 'macOS') || startsWith(matrix.os, 'ubuntu')
-        run: echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+      # - name: Add Flutter tags
+      #   # Add tags, which are also necessary for version checks to work.
+      #   run: git fetch origin +refs/tags/*:refs/tags/*
+      #   working-directory: ${{ github.workspace }}/flutter
+      # - name: Add Flutter to path - Windows
+      #   if: startsWith(matrix.os, 'windows')
+      #   run: echo "$env:GITHUB_WORKSPACE\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      # - name: Add Flutter to path - macOS/Linux
+      #   if: startsWith(matrix.os, 'macOS') || startsWith(matrix.os, 'ubuntu')
+      #   run: echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
       - name: Install Linux dependencies
         if: startsWith(matrix.os, 'ubuntu')
         run: |
