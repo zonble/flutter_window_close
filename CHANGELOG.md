@@ -1,3 +1,7 @@
+## 1.1.0
+
+- Modify the way to set the active window on macOS.
+
 ## 1.0.0
 
 - Prevents closing the window only after the plugin is initialized.
