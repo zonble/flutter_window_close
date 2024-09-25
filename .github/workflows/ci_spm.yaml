@@ -25,13 +25,13 @@ jobs:
         run: flutter doctor -v
       - name: Install dependencies
         run: flutter packages get
-        working-directory: ${{ github.workspace }}/flutter_window_close/example
+        working-directory: example
       - name: Cleans up macOS project
         run: |
           pod deintegrate
           echo "#include \"Generated.xcconfig\""\n" > Flutter/Debug.xcconfig
           echo "#include \"Generated.xcconfig\""\n" > Flutter/Release.xcconfig
-        working-directory: ${{ github.workspace }}/flutter_window_close/example/macos
+        working-directory: example/macos
       - name: Build macOS
         run: flutter build macos
-        working-directory: ${{ github.workspace }}/flutter_window_close/example
+        working-directory: example
