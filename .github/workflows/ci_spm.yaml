@@ -7,8 +7,6 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: flutter_platform_alert
       - uses: actions/setup-java@v4
         with:
           distribution: "oracle"

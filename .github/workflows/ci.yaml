@@ -21,8 +21,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: flutter_platform_alert
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ matrix.version }}
