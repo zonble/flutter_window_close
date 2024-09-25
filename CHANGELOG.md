@@ -1,3 +1,7 @@
+## 1.2.0
+
+- SPM ready.
+
 ## 1.1.0
 
 - Modify the way to set the active window on macOS.
