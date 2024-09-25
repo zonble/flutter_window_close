@@ -25,7 +25,7 @@ jobs:
         run: flutter doctor -v
       - name: Install dependencies
         run: flutter packages get
-        working-directory: ${{ github.workspace }}/flutter_platform_alert/example
+        working-directory: ${{ github.workspace }}/flutter_window_close/example
       - name: Cleans up macOS project
         run: |
           pod deintegrate
