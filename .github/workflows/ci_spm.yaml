@@ -1,0 +1,37 @@
+name: SPM
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: flutter_platform_alert
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "oracle"
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          #   flutter-version: 3.26.x
+          channel: "main" # optional, default to: 'stable'
+      - name: Enable SPM
+        run: |
+          flutter config --enable-swift-package-manager
+      - name: Doctor
+        # Run doctor, for ease of debugging any issues.
+        run: flutter doctor -v
+      - name: Install dependencies
+        run: flutter packages get
+        working-directory: ${{ github.workspace }}/flutter_platform_alert/example
+      - name: Cleans up macOS project
+        run: |
+          pod deintegrate
+          echo "#include \"Generated.xcconfig\""\n" > Flutter/Debug.xcconfig
+          echo "#include \"Generated.xcconfig\""\n" > Flutter/Release.xcconfig
+        working-directory: ${{ github.workspace }}/flutter_window_close/example/macos
+      - name: Build macOS
+        run: flutter build macos
+        working-directory: ${{ github.workspace }}/flutter_window_close/example
