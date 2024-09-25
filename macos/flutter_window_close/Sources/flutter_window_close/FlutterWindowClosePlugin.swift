@@ -46,4 +46,5 @@ public class FlutterWindowClosePlugin: NSObject, FlutterPlugin, NSWindowDelegate
         notificationChannel?.invokeMethod("onWindowClose", arguments: nil)
         return false
     }
+
 }
