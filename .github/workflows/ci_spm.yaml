@@ -27,9 +27,9 @@ jobs:
       - name: Cleans up macOS project
         run: |
           pod deintegrate
-          echo "#include \"Generated.xcconfig\""\n" > Flutter/Debug.xcconfig
+          echo "#include \"Generated.xcconfig\"" > Flutter/Debug.xcconfig
           cat Flutter/Debug.xcconfig
-          echo "#include \"Generated.xcconfig\""\n" > Flutter/Release.xcconfig
+          echo "#include \"Generated.xcconfig\"" > Flutter/Release.xcconfig
           cat Flutter/Release.xcconfig
         working-directory: example/macos
       - name: Build macOS
