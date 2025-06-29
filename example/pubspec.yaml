@@ -8,10 +8,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_platform_alert: ^0.5.0
+  flutter_platform_alert: ^0.8.0
   flutter_window_close:
     path: ../
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
