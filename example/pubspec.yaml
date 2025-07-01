@@ -11,7 +11,7 @@ dependencies:
   flutter_platform_alert: ^0.8.0
   flutter_window_close:
     path: ../
-  cupertino_icons: ^1.0.8
+  cupertino_icons: any
 
 dev_dependencies:
   flutter_test:
