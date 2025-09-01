@@ -2,7 +2,7 @@
 
 2021 © Weizhong Yang a.k.a zonble
 
-[![Pub](https://img.shields.io/pub/v/flutter_window_close.svg)](https://pub.dartlang.org/packages/flutter_window_close) [![example workflow](https://github.com/zonble/flutter_window_close/actions/workflows/ci.yaml/badge.svg)](https://github.com/zonble/flutter_window_close/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/zonble/flutter_window_close/blob/main/LICENSE)
+[![Pub](https://img.shields.io/pub/v/flutter_window_close.svg)](https://pub.dev/packages/flutter_window_close) [![example workflow](https://github.com/zonble/flutter_window_close/actions/workflows/ci.yaml/badge.svg)](https://github.com/zonble/flutter_window_close/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/zonble/flutter_window_close/blob/main/LICENSE)
 
 flutter_window_close lets your Flutter app has a chance to confirm if the user
 wants to close your app. It works on desktop platforms including Windows, macOS
