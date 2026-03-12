@@ -28,8 +28,8 @@ class FlutterWindowClosePluginWeb {
       (JSAny event) {
         if (event.isA<BeforeUnloadEvent>()) {
           final unloadEvent = event as BeforeUnloadEvent;
-          unloadEvent.preventDefault();
           if (_returnValue != null) {
+            unloadEvent.preventDefault();
             unloadEvent.returnValue = _returnValue!;
           }
         }
