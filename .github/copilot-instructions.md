@@ -101,7 +101,7 @@ All desktop methods guard against web usage with `if (kIsWeb) throw Exception(..
 - **Swift (macOS):** Standard Swift style; `//MARK: -` comment separators for protocol sections.
 - **C++ (Windows/Linux):** Google-style C++; `snake_case` for variables and methods; braces on same line; use `std::optional<LRESULT>` for the Windows proc delegate return type.
 - **Naming:** Plugin class is `FlutterWindowClosePlugin` on all platforms; channel names are string literals, not constants, and must match exactly across Dart and native.
-- **No mobile support:** Do not add iOS or Android platform entries. The plugin intentionally targets desktop and web only.
+- **No mobile support:** Do not add iOS or Android platform entries. iOS and Android do not have a window close event, so this plugin cannot be supported on those platforms. The plugin intentionally targets desktop (macOS, Windows, Linux) and web only.
 
 ---
 
@@ -150,7 +150,7 @@ When adding new native files, update the relevant `CMakeLists.txt` (Windows/Linu
 
 ## Adding a New Platform
 
-1. Add a native implementation in a new top-level directory (e.g., `ios/`).
+1. Add a native implementation in a new top-level directory (e.g., `my_platform/`).
 2. Register the plugin class in `pubspec.yaml` under `flutter.plugin.platforms`.
 3. Implement the two method channels (`flutter_window_close` for commands, `flutter_window_close_notification` for events).
 4. Guard any Dart-side platform-specific helpers with `defaultTargetPlatform` or `kIsWeb`.
