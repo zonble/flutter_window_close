@@ -14,6 +14,8 @@ class FlutterWindowClose {
   static MethodChannel? _notificationChannel;
   static const MethodChannel _channel = MethodChannel('flutter_window_close');
 
+  static UnsupportedError _webUnsupported() => UnsupportedError('This method must not be called on the web.');
+
   static Future<void> _initIfRequired() async {
     if (_notificationChannel != null) {
       return;
@@ -77,7 +79,7 @@ class FlutterWindowClose {
   /// The method does not support Flutter Web.
   static Future<void> setWindowShouldCloseHandler(
       Future<bool> Function()? handler) async {
-    if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
+    if (kIsWeb) throw _webUnsupported();
     _onWindowShouldClose = handler;
     await _initIfRequired();
   }
@@ -90,13 +92,13 @@ class FlutterWindowClose {
   /// - On Linux, it calls [gtk_window_close](https://gnome.pages.gitlab.gnome.org/gtk/gtk4/method.Window.close.html)
   /// - The method does not support Flutter Web.
   static Future<void> closeWindow() async {
-    if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
+    if (kIsWeb) throw _webUnsupported();
     await _initIfRequired();
     await _channel.invokeMethod('closeWindow');
   }
 
   static Future<void> destroyWindow() async {
-    if (kIsWeb) throw Exception('The method does not work in Flutter Web.');
+    if (kIsWeb) throw _webUnsupported();
     await _initIfRequired();
     await _channel.invokeMethod('destroyWindow');
   }
@@ -104,7 +106,7 @@ class FlutterWindowClose {
   /// Sets a return value when the current window or tab is being closed
   /// when your app is running in Flutter Web.
   static Future<void> setWebReturnValue(String? returnValue) async {
-    if (!kIsWeb) throw Exception('The method only works in Flutter Web.');
+    if (!kIsWeb) throw UnsupportedError('The method must not be called on non-web platforms.');
     await _channel.invokeMethod('setWebReturnValue', returnValue);
   }
 }
